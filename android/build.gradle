@@ -46,7 +46,9 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
+      multiDexEnabled true
+
     }
 
     dependencies {
@@ -69,5 +71,6 @@ android {
 
 dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation 'androidx.multidex:multidex:2.0.1'
 
 }
