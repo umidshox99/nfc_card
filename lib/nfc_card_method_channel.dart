@@ -83,14 +83,6 @@ class MethodChannelNfcCard extends NfcCardPlatform {
   }
 
   @override
-  Stream<NfcData?> onTagDiscovered({String? instruction}) {
-    if (Platform.isIOS) {}
-    return stream.receiveBroadcastStream().map((rawNfcData) {
-      return NfcData.fromMap(rawNfcData);
-    });
-  }
-
-  @override
   Future stop() async {
     await methodChannel.invokeMethod("stop");
   }

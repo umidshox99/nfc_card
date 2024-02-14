@@ -53,27 +53,35 @@ class NfcCardPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     this.result = result;
-    if (call.method == "checkNFCAvailability") {
-      when {
-        this.nfcAdapter == null -> result.success("not_supported")
-        this.nfcAdapter!!.isEnabled -> result.success("available")
-        else -> result.success("disabled")
+    when (call.method) {
+      "checkNFCAvailability" -> {
+        when {
+          this.nfcAdapter == null -> result.success("not_supported")
+          this.nfcAdapter!!.isEnabled -> result.success("available")
+          else -> result.success("disabled")
+        }
+        return
       }
-      return
-    } else if (call.method == "read") {
-      nfcAdapter?.enableReaderMode(
-        activity,
-        this,
-        NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_NFC_B or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
-        null
-      )
-      return
-    } else if (call.method == "stop") {
+
+      "read" -> {
+        nfcAdapter?.enableReaderMode(
+          activity,
+          this,
+          NfcAdapter.FLAG_READER_NFC_A or NfcAdapter.FLAG_READER_NFC_B or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK,
+          null
+        )
+
+        return
+      }
+
+      "stop" -> {
+        Log.e("card", "stop")
 //      nfcAdapter?.disableForegroundDispatch(activity);
-      nfcAdapter?.disableReaderMode(activity);
-      onDetachedFromEngine(flutterPluginBinding!!)
-      return
+        nfcAdapter?.disableReaderMode(activity);
+        return
+      }
     }
+
   }
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
@@ -98,14 +106,19 @@ class NfcCardPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
   }
 
   private fun buildResult(card: EmvCard?) {
+//    Log.d(
+//      "card", "${card!!.cardNumber}_${card!!.expireDateMonth}/${card.expireDateYear}"
+//    )
     if (card != null && result != null) {
-      Log.d(
-        "card", "${card.cardNumber}_${card.expireDateMonth}/${card.expireDateYear}"
-      )
+//      Log.d(
+//        "card", "${card.cardNumber}_${card.expireDateMonth}/${card.expireDateYear}"
+//      )
       result!!.success("${card.cardNumber}_${card.expireDateMonth}/${card.expireDateYear}")
-      onDetachedFromEngine(flutterPluginBinding!!);
+//      Log.e("card", "DONE")
+      nfcAdapter?.disableReaderMode(activity);
+
     } else {
-      Toast.makeText(this.activity, "nfc_error", Toast.LENGTH_SHORT).show()
+      Toast.makeText(this.activity, "NFC error", Toast.LENGTH_SHORT).show()
     }
   }
 

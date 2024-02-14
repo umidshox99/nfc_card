@@ -24,9 +24,9 @@ abstract class NfcCardPlatform extends PlatformInterface {
 
 
   Future<String?> read();
+
   Future stop();
 
   Future<NFCAvailability?> checkNFCAvailability();
 
-  Stream<NfcData?> onTagDiscovered({String? instruction});
 }

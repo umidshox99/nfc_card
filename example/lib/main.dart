@@ -70,13 +70,15 @@ class _HomePageState extends State<HomePage> {
               child: Text('start'),
               onPressed: () async {
                 String? card = await _nfcCardPlugin.read();
-                 await _nfcCardPlugin.stop();
+                // await _nfcCardPlugin.stop();
+
+                // await _nfcCardPlugin.stop();
                 Navigator.pop(context, card);
               },
             ),
             TextButton(
               child: Text('stop'),
-              onPressed: () {
+              onPressed: () async {
                 // Navigator.push(context,
                 //     MaterialPageRoute(builder: (context) => SecondPage()));
               },

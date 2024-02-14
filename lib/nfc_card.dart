@@ -9,7 +9,8 @@ class NfcCard {
   Future<String?> read() {
     return NfcCardPlatform.instance.read();
   }
+
   Future stop() {
-    return NfcCardPlatform.instance.read();
+    return NfcCardPlatform.instance.stop();
   }
 }
