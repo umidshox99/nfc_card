@@ -49,9 +49,9 @@ object SimpleCardReader {
       Log.e("NFC_SCAN_ERROR", e.toString())
     }
     //TODO this scope MUST be changed
-    GlobalScope.launch(Dispatchers.Main) {
+//    GlobalScope.launch(Dispatchers.Main) {
       readTheCard(isoDep!!, callback)
-    }
+//    }
   }
 
   private fun readTheCard(isoDep: IsoDep, simpleCardReaderCallback: SimpleCardReaderCallback) {
