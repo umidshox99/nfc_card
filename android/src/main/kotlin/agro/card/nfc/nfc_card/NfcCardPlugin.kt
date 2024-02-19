@@ -50,6 +50,14 @@ class NfcCardPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     channel.setMethodCallHandler(this)
   }
 
+  private fun nfcIsEnabled() {
+    Log.e("UMIDJON", NfcAdapter.getDefaultAdapter(activity).isEnabled.toString())
+    if (!NfcAdapter.getDefaultAdapter(activity).isEnabled) {
+      val myIntent = Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
+      Log.e("UMIDJON", NfcAdapter.getDefaultAdapter(activity).isEnabled.toString())
+      activity!!.startActivityForResult(myIntent, 101)
+    }
+  }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     this.result = result;
@@ -58,7 +66,10 @@ class NfcCardPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         when {
           this.nfcAdapter == null -> result.success("not_supported")
           this.nfcAdapter!!.isEnabled -> result.success("available")
-          else -> result.success("disabled")
+          else -> {
+            nfcIsEnabled();
+//            result.success("disabled")
+          }
         }
         return
       }
